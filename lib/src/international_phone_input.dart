@@ -17,7 +17,6 @@ class InternationalPhoneInput extends StatefulWidget {
   final String errorText;
   final String hintText;
   final String labelText;
-  final TextStyle errorStyle;
   final TextStyle hintStyle;
   final TextStyle labelStyle;
   final int errorMaxLines;
@@ -31,7 +30,6 @@ class InternationalPhoneInput extends StatefulWidget {
       this.errorText,
       this.hintText,
       this.labelText,
-      this.errorStyle,
       this.hintStyle,
       this.labelStyle,
       this.enabledCountries = const [],
@@ -55,13 +53,10 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
   String hintText;
   String labelText;
 
-  TextStyle errorStyle;
   TextStyle hintStyle;
   TextStyle labelStyle;
 
   int errorMaxLines;
-
-  bool hasError = false;
 
   InputDecoration decoration;
 
@@ -74,7 +69,6 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
     errorText = widget.errorText ?? 'Please enter a valid phone number';
     hintText = widget.hintText ?? 'eg. 244056345';
     labelText = widget.labelText;
-    errorStyle = widget.errorStyle;
     hintStyle = widget.hintStyle;
     labelStyle = widget.labelStyle;
     errorMaxLines = widget.errorMaxLines;
@@ -111,10 +105,6 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
     if (phoneText != null && phoneText.isNotEmpty) {
       PhoneService.parsePhoneNumber(phoneText, selectedItem.code)
           .then((isValid) {
-        setState(() {
-          hasError = !isValid;
-        });
-
         if (widget.onPhoneNumberChange != null) {
           if (isValid) {
             PhoneService.getNormalizedPhoneNumber(phoneText, selectedItem.code)
@@ -206,9 +196,7 @@ class _InternationalPhoneInputState extends State<InternationalPhoneInput> {
             decoration: decoration ?? InputDecoration(
               hintText: hintText,
               labelText: labelText,
-              errorText: hasError ? errorText : null,
               hintStyle: hintStyle ?? null,
-              errorStyle: errorStyle ?? null,
               labelStyle: labelStyle,
               errorMaxLines: errorMaxLines ?? 3,
             ),
